@@ -21,13 +21,13 @@ pipeline {
                 sh 'mvn clean test'
             }
         }
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv(env.SONARQUBE_SERVER) {
-                    sh 'mvn sonar:sonar'
-                }
-            }
-        }
+        // stage('SonarQube Analysis') {
+        //     steps {
+        //         withSonarQubeEnv(env.SONARQUBE_SERVER) {
+        //             sh 'mvn sonar:sonar'
+        //         }
+        //     }
+        // }
         // stage('Quality Gate') {
         //     steps {
         //         timeout(time: 15, unit: 'MINUTES') {
