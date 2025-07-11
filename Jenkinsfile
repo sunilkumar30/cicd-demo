@@ -42,7 +42,7 @@ pipeline {
         }
         stage('Deploy to Nexus') {
             steps {
-                sh 'mvn deploy -DaltDeploymentRepository=nexus::default::${NEXUS_URL}'
+                sh 'mvn deploy -s settings.xml -DaltDeploymentRepository=nexus::default::${NEXUS_URL}'
             }
         }
     }
