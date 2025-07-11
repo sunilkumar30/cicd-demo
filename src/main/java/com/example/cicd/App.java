@@ -15,7 +15,7 @@ public class App {
 
     @GetMapping("/")
     public String hello() {
-        return "Hello Sunil, this is from your CI/CD Demo!";
+        return "Hello World from CI/CD Demo!";
     }
 
     @GetMapping("/health")
