@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+
+    environment {
+        SONARQUBE_SERVER = 'SonarQubeServer' // Jenkins SonarQube server name
+        NEXUS_URL = 'http://localhost:8081/repository/maven-snapshots/' // Replace with your Nexus URL
+        NEXUS_CREDENTIALS_ID = 'nexus-credentials' // Jenkins credentials ID for Nexus
+        SLACK_WEBHOOK_URL = credentials('slack-webhook-url') // Jenkins secret text credential
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn clean test'
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv(env.SONARQUBE_SERVER) {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('Deploy to Nexus') {
+            steps {
+                sh 'mvn deploy -DaltDeploymentRepository=nexus::default::${NEXUS_URL}'
+            }
+        }
+    }
+    post {
+        always {
+            script {
+                def status = currentBuild.currentResult == 'SUCCESS' ? ':white_check_mark:' : ':x:'
+                def message = "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} ${status} (${env.BUILD_URL})"
+                sh "curl -X POST -H 'Content-type: application/json' --data '{\"text\": \"${message}\"}' ${SLACK_WEBHOOK_URL}"
+            }
+        }
+    }
+} 

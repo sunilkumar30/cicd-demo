@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 
+          http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+    <servers>
+        <server>
+            <id>nexus</id>
+            <username>admin</username>
+            <password>a832590b-594c-4fbb-9fe1-c53dc97e1790</password>
+        </server>
+    </servers>
+
+    <profiles>
+        <profile>
+            <id>nexus</id>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <name>Maven Central</name>
+                    <url>http://localhost:8081/repository/maven-central/</url>
+                </repository>
+                <repository>
+                    <id>snapshots</id>
+                    <name>Maven Snapshots</name>
+                    <url>http://localhost:8081/repository/maven-snapshots/</url>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
+
+    <activeProfiles>
+        <activeProfile>nexus</activeProfile>
+    </activeProfiles>
+
+</settings> 
