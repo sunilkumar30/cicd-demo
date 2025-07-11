@@ -6,6 +6,8 @@ pipeline {
         NEXUS_URL = 'http://localhost:8081/repository/maven-snapshots/' // Replace with your Nexus URL
         NEXUS_CREDENTIALS_ID = 'nexus-credentials' // Jenkins credentials ID for Nexus
         // SLACK_WEBHOOK_URL = credentials('slack-webhook-url') // Jenkins secret text credential
+        MAVEN_HOME = '/usr/local/Cellar/maven/3.9.10/libexec'
+        PATH = "${env.MAVEN_HOME}/bin:${env.PATH}"
     }
 
     stages {
